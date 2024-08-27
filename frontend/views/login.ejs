@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="/stylesheet/style.css">
+<div class="wraper">
+    
+    <form  class="login_input" id="loginForm">
+        <h1 >Login</h1>
+        <%- include('message.ejs') %>
+        <div class="inputbox">
+            <input type="email" placeholder="enter your email" name="email">
+            
+        </div>
+        <div class="inputbox">
+            <input type="password" placeholder="enter your pasword" name="password">
+            
+        </div>
+        
+        <button type="submit">login</button>
+        
+        
+        <div class="forgot_registor">
+            <div>
+                Dont have an account?<a href="/register">register</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = new URLSearchParams(formData);
+
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        body: data,
+        credentials: 'include' 
+      });
+
+      if (response.ok) {
+        window.location.href = '/user/me'; 
+      } else {
+        const result = await response.json();
+        alert(result.message);
+      }
+    });
+  </script>

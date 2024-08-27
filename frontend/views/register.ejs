@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="/stylesheet/style.css">
+<div class="wraper">
+    
+    <form class="login_input" id="registerForm">
+        <h1 >Register</h1>
+        <%- include('message.ejs') %>
+        <div class="inputbox">
+            <input type="text" placeholder="enter your first name" name="firstName"  value="<%= typeof name != 'undefined' ? name : '' %>">
+          
+        </div>
+        <div class="inputbox">
+            <input type="text" placeholder="enter your last name" name="lastName"  value="<%= typeof name != 'undefined' ? name : '' %>">
+          
+        </div>
+        <div class="inputbox">
+            <input type="email" placeholder="enter your email" name="email" value="<%= typeof email != 'undefined' ? email : '' %>">
+            
+        </div>
+        <div class="inputbox">
+            <input type="password" placeholder="enter your pasword" name="password"  value="<%= typeof password != 'undefined' ? password : '' %>">
+            
+        </div>
+        <button type="submit" value="register">Register</button>
+        <div class="forgot_registor">
+            <div>
+                Already have an account?<a href="/login">login</a>
+            </div>
+            
+            
+        </div>
+    </form>
+</div>
+<script>
+    document.getElementById('registerForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = new URLSearchParams(formData);
+
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        body: data,
+        credentials: 'include' 
+      });
+
+      if (response.ok) {
+        window.location.href = '/user/me'; 
+      } else {
+        const result = await response.json();
+        alert(result.message);
+      }
+    });
+  </script>
